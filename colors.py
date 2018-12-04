@@ -2,43 +2,60 @@
 
 from turtle import *
 #setup()
-#colormode(255)
+colormode(255)
 t = Turtle()
+t.speed(0)
 
-"""
-# no writing in turtle
-fp1 = open("/tmp/a.txt","w+")
-with fp1:
-  for i in range(5):
-    fp1.write("line" + str(i))
-"""
+px = 10
 
+
+f = open("randombytes", "rb")
+f.seek(0,2)
+size = f.tell()
+side = int( (size/3)**(1/2) ) * px
+f.seek(0)
+
+t.hideturtle()
 i = 0
-fp2 = open("/tmp/a.txt", "rb")
-try:
-  while fp2:
-    r = ord(fp2.read(1))
-    g = ord(fp2.read(1))
-    b = ord(fp2.read(1))
+j = 0
+while f:
+  try:
+    r = ord(f.read(1))
+    g = ord(f.read(1))
+    b = ord(f.read(1))
+  except:
+    break
+
+  if i == side:
+    i = 0
+    j -= px
+  t.goto(i,j)
+  i += px
+
+  t.down()
+
+  t.color(r,g,b)
+  t.begin_fill()
+  #t.circle(px)
+  t.forward(px)
+  t.right(90)
+  t.forward(px)
+  t.right(90)
+  t.forward(px)
+  t.right(90)
+  t.forward(px)
+  t.right(90)
+  t.end_fill()
+
+  t.up()
 
 
-    t.goto(0,i)
-    i += 10
-    t.down()
-    t.color(r,g,b)
 
-    t.begin_fill()
-    #t.circle(10)
-    t.forward(10)  # forward takes a number which is the distance to move
-    t.right(90)  # turn right
-    t.forward(10)
-    t.right(90)
-    t.forward(10)
-    t.right(90)
-    t.forward(10)
-    t.right(90)
-    t.end_fill()
+ts = getcanvas()
+ts.postscript(file="rb.ps", colormode='color')
 
-    t.up()
-except:
-  pass
+#done()
+
+#to see
+import time
+time.sleep(5)
